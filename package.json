@@ -62,5 +62,13 @@
     "bundle": {
       "patch": "./cordis.patch.yml"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CHRISYU2233/weknora-plugin-bydhs.git"
+  },
+  "homepage": "https://github.com/CHRISYU2233/weknora-plugin-bydhs#readme",
+  "bugs": {
+    "url": "https://github.com/CHRISYU2233/weknora-plugin-bydhs/issues"
   }
 }
