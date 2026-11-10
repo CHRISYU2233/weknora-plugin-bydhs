@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20, 22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      # The package has no runtime dependencies and no build step: tests import
+      # the source directly with the Node test runner.
+      - name: Unit tests
+        run: node --test
+      - name: Schema check (skips when the validator is unavailable)
+        run: node scripts/verify-schemas.mjs
+      - name: Offline end-to-end check against the mock server
+        run: |
+          node scripts/mock-weknora.mjs --port 18090 &
+          MOCK_PID=$!
+          sleep 2
+          WEKNORA_BASE_URL=http://127.0.0.1:18090/api/v1 \
+          WEKNORA_API_KEY=mock-key \
+          WEKNORA_KNOWLEDGE_BASE_IDS=mock-kb \
+          node scripts/verify-live.mjs --query "inspection cycle"
+          kill $MOCK_PID

@@ -1,0 +1,66 @@
+{
+  "name": "weknora-plugin-bydhs",
+  "displayName": "WeKnora_plugin_byDHS",
+  "version": "0.4.0",
+  "description": "WeKnora grounding plugin for DeepSeek Harness: injects retrieved evidence before the model answers, gates low-quality evidence, verifies citations, and exposes retrieval, wiki and knowledge-base tools plus a system-prompt policy that requires answers about organizational knowledge to be based on WeKnora evidence.",
+  "license": "MIT",
+  "author": "WeKnora_plugin_byDHS contributors",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "cordis",
+    "weknora",
+    "rag",
+    "retrieval",
+    "grounding",
+    "citations",
+    "knowledge-base",
+    "wiki"
+  ],
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "config.js",
+    "client.js",
+    "tools.js",
+    "gate.js",
+    "evidence.js",
+    "cite.js",
+    "state.js",
+    "cordis.patch.yml",
+    "install.ps1",
+    "README.md",
+    "README.en.md",
+    "HANDOVER.md",
+    "TESTING.md",
+    "CHANGELOG.md",
+    "COMPATIBILITY.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "LICENSE",
+    "examples",
+    "samples",
+    "scripts"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "doctor": "node scripts/doctor.mjs",
+    "mock": "node scripts/mock-weknora.mjs",
+    "verify:live": "node scripts/verify-live.mjs",
+    "verify:schemas": "node scripts/verify-schemas.mjs"
+  },
+  "engines": {
+    "node": ">=20.11"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

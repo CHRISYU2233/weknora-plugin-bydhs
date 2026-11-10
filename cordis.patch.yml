@@ -1,0 +1,30 @@
+# The configuration layer this bundle contributes when a profile lists it.
+# Override the row from the profile's own cordis.patch.yml to point the plugin
+# at your deployment; every field is documented in README.md.
+#
+# Every `!!js` expression below is a double-quoted scalar. That is deliberate:
+# an unquoted scalar that contains `: ` (for example a ternary) terminates
+# early, the loader hands the row an object instead of a value, and the plugin
+# fails to load with a ConfigError.
+- insert:
+    - id: WeKnora_plugin_byDHS
+      # Must be the package name as the profile resolves it — an npm name, or
+      # the name of a `file:` dependency.
+      name: "weknora-plugin-bydhs"
+      config:
+        baseUrl: !!js "process.env.WEKNORA_BASE_URL || 'http://localhost:8080/api/v1'"
+        # Preferred: read the key from the deployment credential store. The
+        # environment variable is only a fallback for shell-launched instances.
+        apiKeyRef: !!js "process.env.WEKNORA_API_KEY_REF || 'WEKNORA_API_KEY'"
+        apiKey: !!js "process.env.WEKNORA_API_KEY"
+        knowledgeBaseIds: !!js "(process.env.WEKNORA_KNOWLEDGE_BASE_IDS || '').split(',').filter(Boolean)"
+        agentId: !!js "process.env.WEKNORA_AGENT_ID"
+        toolPrefix: !!js "process.env.WEKNORA_GROUND_TOOL_PREFIX || 'wkg'"
+        # --- grounding behaviour ---
+        # Empty environment variables count as unset (`||` rather than `??`), so
+        # `WEKNORA_GROUND_MIN_COVERAGE=` cannot silently disable the gate.
+        injectEvidence: !!js "String(process.env.WEKNORA_GROUND_INJECT || 'true') !== 'false'"
+        policyOrder: !!js "Number(process.env.WEKNORA_GROUND_POLICY_ORDER || 10500)"
+        minCoverage: !!js "Number(process.env.WEKNORA_GROUND_MIN_COVERAGE || 0.34)"
+        maxInjectedChars: !!js "Number(process.env.WEKNORA_GROUND_MAX_INJECTED_CHARS || 4000)"
+        temperatureCap: !!js "Number(process.env.WEKNORA_GROUND_TEMPERATURE_CAP || 0.2)"

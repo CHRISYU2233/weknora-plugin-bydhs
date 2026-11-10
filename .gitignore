@@ -1,0 +1,26 @@
+# dependencies and runtime artefacts
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+
+# secrets and local configuration
+.credentials.yaml
+.env
+.env.*
+!.env.example
+*.local.yml
+*.local.yaml
+
+# local verification output
+.verify/
+*.log
+server.*.log
+
+# editors and OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# coverage
+coverage/

@@ -1,0 +1,37 @@
+# Copy this row into <profile>/cordis.patch.yml, then adjust baseUrl / apiKeyRef /
+# knowledgeBaseIds. A patch REPLACES the row's whole config, so restate every
+# field you want to keep.
+- id: WeKnora_plugin_byDHS
+  name: "weknora-plugin-bydhs"
+  disabled: false
+  config:
+    # WeKnora API root; a bare origin is accepted and /api/v1 is appended.
+    baseUrl: 'http://localhost:8080/api/v1'
+
+    # Preferred: resolve the key from the DSH credential store
+    # (~/.dsh/.credentials.yaml -> refs.WEKNORA_API_KEY).
+    apiKeyRef: WEKNORA_API_KEY
+
+    # Default retrieval scope; empty means every KB this credential can see.
+    knowledgeBaseIds:
+      - <your-knowledge-base-id>
+
+    # --- grounding behaviour (all optional; defaults shown) ---
+    enforce: true              # "must" / "should" wording in the policy section
+    injectEvidence: true       # pre-step evidence injection (false = tools only)
+    policyOrder: 10500         # renders after the first-party persona suffix (10200)
+    minCoverage: 0.34          # lexical coverage a passage must reach to be evidence
+    # minScore: 0.5            # optional absolute floor; only for normalised 0..1 scores
+    maxInjectedChars: 4000     # budget for one injected block (rules included)
+    injectTopK: 6              # passages requested for the injection
+    temperatureCap: 0.2        # cap sampling temperature on grounded sessions; null disables
+    perKbIsolation: true       # query each KB separately so one broken KB cannot empty the page
+    maxRetries: 1              # retries for 429/5xx/network; 0 disables
+    maxWikiChars: 8000         # character budget for one wiki page
+
+    # --- deployment options ---
+    # tenantId: '1'            # X-Tenant-ID, required by platform-scoped keys
+    # extraHeaders:            # extra headers for a gateway/proxy in front of WeKnora
+    #   X-Gateway-Token: '...'
+    # agentId: ''              # a WeKnora custom agent id makes ask use the ReAct pipeline
+    # toolPrefix: wkg          # rename tools, e.g. weknora -> weknora_search
